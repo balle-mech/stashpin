@@ -1,0 +1,216 @@
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.scene { display: flex; gap: 24px; padding: 24px; background: var(--color-background-secondary); border-radius: var(--border-radius-lg); justify-content: center; flex-wrap: wrap; }
+.phone { width: 220px; background: #1a1a1a; border-radius: 36px; padding: 10px; flex-shrink: 0; }
+.screen { background: #faf8f5; border-radius: 28px; overflow: hidden; height: 440px; display: flex; flex-direction: column; position: relative; }
+.status-bar { background: #faf8f5; padding: 8px 16px 4px; display: flex; justify-content: space-between; font-size: 10px; color: #999; }
+.nav-bar { background: #faf8f5; padding: 8px 16px 12px; border-bottom: 0.5px solid #e8e4dc; }
+.nav-title { font-size: 15px; font-weight: 500; color: #2c2a25; }
+.nav-sub { font-size: 11px; color: #a09b92; margin-top: 1px; }
+.content { flex: 1; overflow: hidden; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.card { background: #fff; border-radius: 14px; padding: 10px; border: 0.5px solid #ede9e0; display: flex; gap: 10px; align-items: flex-start; }
+.card-thumb { width: 52px; height: 52px; border-radius: 10px; flex-shrink: 0; object-fit: cover; background: #e8e4dc; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.card-body { flex: 1; min-width: 0; }
+.card-name { font-size: 12px; font-weight: 500; color: #2c2a25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-cat { font-size: 10px; color: #c9a87c; margin-top: 2px; }
+.card-source { display: flex; align-items: center; gap: 4px; margin-top: 5px; background: #faf8f5; border-radius: 6px; padding: 3px 6px; }
+.source-icon { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.source-text { font-size: 9px; color: #a09b92; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-actions { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.badge-visited { font-size: 9px; background: #e8f5ec; color: #4a9b6a; padding: 2px 6px; border-radius: 999px; }
+.badge-want { font-size: 9px; background: #fef3e2; color: #c9843c; padding: 2px 6px; border-radius: 999px; }
+.heart { font-size: 14px; color: #e8a0a0; }
+.section-label { font-size: 10px; color: #a09b92; font-weight: 500; padding: 0 2px; margin-top: 2px; }
+.tab-bar { background: #faf8f5; border-top: 0.5px solid #e8e4dc; padding: 8px 0 10px; display: flex; justify-content: space-around; }
+.tab { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.tab-icon { font-size: 18px; color: #c9c4bb; }
+.tab-icon.active { color: #c9843c; }
+.tab-label { font-size: 9px; color: #c9c4bb; }
+.tab-label.active { color: #c9843c; }
+.fab { position: absolute; bottom: 56px; right: 12px; width: 36px; height: 36px; background: #c9843c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; box-shadow: 0 2px 8px rgba(201,132,60,0.35); }
+
+.sheet-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.25); display: flex; align-items: flex-end; z-index: 10; }
+.sheet { background: #faf8f5; border-radius: 20px 20px 0 0; padding: 16px 14px 20px; width: 100%; }
+.sheet-handle { width: 32px; height: 3px; background: #d0ccc4; border-radius: 99px; margin: 0 auto 12px; }
+.sheet-title { font-size: 13px; font-weight: 500; color: #2c2a25; margin-bottom: 10px; }
+.input-row { background: #fff; border-radius: 10px; padding: 9px 10px; border: 0.5px solid #e0dbd2; margin-bottom: 8px; }
+.input-label { font-size: 9px; color: #a09b92; margin-bottom: 3px; }
+.input-val { font-size: 11px; color: #2c2a25; }
+.input-val.muted { color: #c0bbb3; }
+.url-pill { background: #fff8f0; border: 0.5px solid #f0d4a8; border-radius: 8px; padding: 7px 10px; display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.url-ig-icon { width: 18px; height: 18px; border-radius: 5px; background: linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7); flex-shrink: 0; }
+.url-text { font-size: 9px; color: #8b7355; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.url-badge { font-size: 8px; background: #e8f5ec; color: #4a9b6a; padding: 2px 6px; border-radius: 99px; flex-shrink: 0; }
+.cat-row { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.cat-chip { font-size: 9px; padding: 4px 10px; border-radius: 99px; background: #f0ebe2; color: #a09b92; border: 0.5px solid #e0dbd2; }
+.cat-chip.active { background: #fef3e2; color: #c9843c; border-color: #f0d4a8; }
+.save-btn { background: #c9843c; color: white; border-radius: 10px; padding: 9px; text-align: center; font-size: 12px; font-weight: 500; }
+
+.detail-screen .screen { background: #faf8f5; }
+.detail-img { width: 100%; height: 110px; background: #d4c5a9; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+.detail-body { padding: 12px; flex: 1; overflow: hidden; }
+.detail-name { font-size: 14px; font-weight: 500; color: #2c2a25; }
+.detail-cat-row { display: flex; gap: 6px; margin: 6px 0; }
+.detail-source-card { background: #fff; border-radius: 10px; padding: 8px 10px; border: 0.5px solid #ede9e0; margin-bottom: 8px; }
+.detail-source-title { font-size: 9px; color: #a09b92; margin-bottom: 5px; }
+.detail-source-row { display: flex; align-items: center; gap: 6px; }
+.detail-memo { background: #fff; border-radius: 10px; padding: 8px 10px; border: 0.5px solid #ede9e0; }
+.detail-memo-label { font-size: 9px; color: #a09b92; margin-bottom: 4px; }
+.detail-memo-text { font-size: 11px; color: #5a5550; line-height: 1.5; }
+.back-btn { display: flex; align-items: center; gap: 3px; font-size: 11px; color: #c9843c; }
+
+.label-box { text-align: center; margin-top: 10px; }
+.label-box p { font-size: 11px; color: var(--color-text-secondary); }
+.label-box strong { font-size: 12px; color: var(--color-text-primary); display: block; margin-bottom: 2px; }
+</style>
+
+<div class="scene">
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="nav-bar">
+          <div class="nav-title">行きたいリスト ✨</div>
+          <div class="nav-sub">12件のスポット</div>
+        </div>
+        <div class="content">
+          <div class="section-label">最近追加</div>
+          <div class="card">
+            <div class="card-thumb">🍰</div>
+            <div class="card-body">
+              <div class="card-name">Cafe Madu 表参道</div>
+              <div class="card-cat">カフェ・スイーツ</div>
+              <div class="card-source">
+                <div class="source-icon" style="background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7)"></div>
+                <span class="source-text">Instagram @cafelover_tokyo</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <span class="badge-want">行きたい</span>
+              <span class="heart">♡</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-thumb">🍜</div>
+            <div class="card-body">
+              <div class="card-name">麺屋 一燈</div>
+              <div class="card-cat">ラーメン</div>
+              <div class="card-source">
+                <div class="source-icon" style="background:#000;border-radius:3px"></div>
+                <span class="source-text">TikTok @ramen_guide</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <span class="badge-visited">行った！</span>
+              <span class="heart" style="color:#e86868">♥</span>
+            </div>
+          </div>
+          <div class="section-label" style="margin-top:4px">Naoが追加</div>
+          <div class="card">
+            <div class="card-thumb">🌸</div>
+            <div class="card-body">
+              <div class="card-name">茶寮 都路里 銀座</div>
+              <div class="card-cat">和カフェ・甘味</div>
+              <div class="card-source">
+                <div class="source-icon" style="background:#1877f2;border-radius:3px"></div>
+                <span class="source-text">X (Twitter) @kyoto_sweets</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <span class="badge-want">行きたい</span>
+              <span class="heart">♡</span>
+            </div>
+          </div>
+        </div>
+        <div class="fab">+</div>
+        <div class="tab-bar">
+          <div class="tab"><span class="tab-icon active">☰</span><span class="tab-label active">リスト</span></div>
+          <div class="tab"><span class="tab-icon">🗺</span><span class="tab-label">マップ</span></div>
+          <div class="tab"><span class="tab-icon">🔖</span><span class="tab-label">カテゴリ</span></div>
+          <div class="tab"><span class="tab-icon">👤</span><span class="tab-label">ふたり</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="label-box"><strong>① リスト画面</strong><p>SNS元が色で一目でわかる</p></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <div class="phone">
+      <div class="screen">
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="sheet-overlay">
+          <div class="sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-title">スポットを追加</div>
+            <div class="url-pill">
+              <div class="url-ig-icon"></div>
+              <span class="url-text">instagram.com/p/Cx2mK9rP…</span>
+              <span class="url-badge">自動取得 ✓</span>
+            </div>
+            <div class="input-row">
+              <div class="input-label">スポット名</div>
+              <div class="input-val">Cafe Madu 表参道</div>
+            </div>
+            <div class="input-row" style="margin-bottom:8px">
+              <div class="input-label">メモ（任意）</div>
+              <div class="input-val muted">パンケーキが美味しそう！</div>
+            </div>
+            <div class="cat-row">
+              <div class="cat-chip active">カフェ</div>
+              <div class="cat-chip active">スイーツ</div>
+              <div class="cat-chip">ごはん</div>
+              <div class="cat-chip">おでかけ</div>
+            </div>
+            <div class="save-btn">保存する</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="label-box"><strong>② 共有シートから保存</strong><p>SNSのURLが自動でセット</p></div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+    <div class="phone detail-screen">
+      <div class="screen">
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div style="padding:8px 12px;background:#faf8f5;display:flex;align-items:center;gap:8px;border-bottom:0.5px solid #e8e4dc;">
+          <span class="back-btn">← 戻る</span>
+        </div>
+        <div class="detail-img">🍰</div>
+        <div class="detail-body">
+          <div class="detail-name">Cafe Madu 表参道</div>
+          <div class="detail-cat-row">
+            <span class="cat-chip active" style="font-size:9px">カフェ</span>
+            <span class="cat-chip active" style="font-size:9px">スイーツ</span>
+          </div>
+          <div class="detail-source-card">
+            <div class="detail-source-title">きっかけ</div>
+            <div class="detail-source-row">
+              <div class="source-icon" style="width:16px;height:16px;background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7);border-radius:4px"></div>
+              <span style="font-size:10px;color:#8b7355;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">@cafelover_tokyo のInstagram投稿</span>
+              <span style="font-size:9px;color:#c9843c">開く↗</span>
+            </div>
+          </div>
+          <div class="detail-memo">
+            <div class="detail-memo-label">メモ</div>
+            <div class="detail-memo-text">パンケーキめちゃくちゃ美味しそう！次のデートで絶対行きたい🥞</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <div style="flex:1;background:#fff;border-radius:10px;padding:8px;border:0.5px solid #ede9e0;text-align:center">
+              <div style="font-size:9px;color:#a09b92">追加日</div>
+              <div style="font-size:11px;color:#2c2a25;margin-top:2px">2024.6.15</div>
+            </div>
+            <div style="flex:1;background:#fef3e2;border-radius:10px;padding:8px;border:0.5px solid #f0d4a8;text-align:center">
+              <div style="font-size:9px;color:#c9843c">ステータス</div>
+              <div style="font-size:11px;color:#c9843c;margin-top:2px;font-weight:500">行きたい ✨</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="label-box"><strong>③ 詳細画面</strong><p>きっかけのSNS投稿に戻れる</p></div>
+  </div>
+
+</div>
